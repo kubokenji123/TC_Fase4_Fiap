@@ -1,11 +1,13 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from pathlib import Path
 
-# Carregar o modelo, o scaler e o label encoder
-model = joblib.load('random_forest_model.pkl')
-scaler = joblib.load('scaler.pkl')
-label_encoder = joblib.load('label_encoder.pkl')
+# Carregar o modelo, o scaler e o label encoder usando caminhos relativos
+BASE_DIR = Path(__file__).resolve().parent
+model = joblib.load(str(BASE_DIR / 'random_forest_model.pkl'))
+scaler = joblib.load(str(BASE_DIR / 'scaler.pkl'))
+label_encoder = joblib.load(str(BASE_DIR / 'label_encoder.pkl'))
 
 # Título da aplicação
 st.title('Previsão de Nível de Obesidade')
@@ -66,7 +68,7 @@ categorical_cols = ['Gender', 'family_history', 'FAVC', 'CAEC', 'SMOKE', 'SCC', 
 
 # O df_final possui todas as colunas que o modelo espera
 # Vamos pegar as colunas de X_train_scaled, que são as colunas que o modelo espera, menos a coluna alvo
-model_features = joblib.load('random_forest_model.pkl').feature_names_in_
+model_features = model.feature_names_in_
 
 # Aplicar One-Hot Encoding no input_df
 input_df_encoded = pd.get_dummies(input_df, columns=categorical_cols, drop_first=True)
